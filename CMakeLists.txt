@@ -100,6 +100,7 @@ target_compile_options(crunch PRIVATE
   "-fno-strict-aliasing"
   "-Wno-unused"
   "-Wno-deprecated-declarations"
+  "-Wno-absolute-value"
 )
 
 target_link_libraries(crunch

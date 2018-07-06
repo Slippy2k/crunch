@@ -1063,6 +1063,7 @@ namespace crnlib
             case PIXEL_FMT_DXT1A:
             {
                desc.ddpfPixelFormat.dwFourCC = (uint32)PIXEL_FMT_DXT1;
+               desc.ddpfPixelFormat.dwFlags |= DDPF_ALPHAPIXELS;
                desc.ddpfPixelFormat.dwRGBBitCount = 0;
                break;
             }
