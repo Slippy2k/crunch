@@ -97,10 +97,16 @@ set(CRNLIB_SOURCE_FILES
   crnlib/lzma_LzmaLib.cpp
 )
 
-add_library(crnlib STATIC ${CRNLIB_SOURCE_FILES})
+set(CRNLIB_PUBLIC_HEADERS
+  inc/crnlib.h
+)
 
-target_compile_options(crnlib PRIVATE ${CRUNCH_COMPILE_OPTIONS})
+add_library(crnlib SHARED ${CRNLIB_SOURCE_FILES})
 
+set_target_properties(crnlib PROPERTIES
+  PUBLIC_HEADER ${CRNLIB_PUBLIC_HEADERS})
+target_compile_options(crnlib
+  PRIVATE ${CRUNCH_COMPILE_OPTIONS})
 target_include_directories(crnlib PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/inc
   ${CMAKE_CURRENT_SOURCE_DIR}/crnlib
@@ -126,4 +132,9 @@ target_include_directories(crunch PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/crnlib
 )
 
-install (TARGETS crunch DESTINATION bin)
+install(TARGETS crnlib crunch
+  RUNTIME DESTINATION bin
+  PUBLIC_HEADER DESTINATION include/crunch
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+)
