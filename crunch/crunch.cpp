@@ -819,7 +819,7 @@ class crunch {
     if (m_params.has_key("helperThreads"))
       comp_params.m_num_helper_threads = m_params.get_value_as_int("helperThreads", 0, cCRNMaxHelperThreads, 0, cCRNMaxHelperThreads);
     else if (g_number_of_processors > 1)
-      comp_params.m_num_helper_threads = g_number_of_processors - 1;
+      comp_params.m_num_helper_threads = math::clamp<uint>(g_number_of_processors - 1, 0, cCRNMaxHelperThreads);
 
     dynamic_string comp_name;
     if (m_params.get_value_as_string("compressor", 0, comp_name)) {
