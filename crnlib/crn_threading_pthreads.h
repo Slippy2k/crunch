@@ -270,7 +270,11 @@ inline bool task_pool::queue_object_task(S* pObject, T pObject_method, uint64 da
   object_task<S>* pTask = crnlib_new<object_task<S> >(pObject, pObject_method, cObjectTaskFlagDeleteAfterExecution);
   if (!pTask)
     return false;
-  return queue_task(pTask, data, pData_ptr);
+  bool result = queue_task(pTask, data, pData_ptr);
+  if (!result) {
+    crnlib_free(pTask);
+  }
+  return result;
 }
 
 template <typename S, typename T>
@@ -300,7 +304,7 @@ inline bool task_pool::queue_multiple_object_tasks(S* pObject, T pObject_method,
 
     if (!m_task_stack.try_push(tsk)) {
       atomic_increment32(&m_total_completed_tasks);
-
+      crnlib_free(tsk.m_pObj);
       status = false;
       break;
     }
