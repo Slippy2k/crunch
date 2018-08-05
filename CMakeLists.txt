@@ -11,6 +11,10 @@ set(CMAKE_CXX_STANDARD 11)
 
 find_package(Threads REQUIRED)
 
+option(BUILD_SHARED_LIBS "Build crnlib as a shared library" OFF)
+set(CRUNCH_TOOL_NAME crunch CACHE STRING "Name of crunch tool to build.")
+set(CRUNCH_LIBRARY_NAME crnlib CACHE STRING "Name of crunch library to build.")
+
 set(CRUNCH_COMPILE_OPTIONS
   "-ffast-math"
   "-fno-strict-aliasing"
@@ -99,15 +103,20 @@ set(CRNLIB_PUBLIC_HEADERS
   inc/crnlib.h
 )
 
-add_library(crnlib SHARED ${CRNLIB_SOURCE_FILES})
+add_library(crnlib ${CRNLIB_SOURCE_FILES})
 
 set_target_properties(crnlib PROPERTIES
+  OUTPUT_NAME ${CRUNCH_LIBRARY_NAME}
   PUBLIC_HEADER ${CRNLIB_PUBLIC_HEADERS})
 target_compile_options(crnlib
   PRIVATE ${CRUNCH_COMPILE_OPTIONS})
 target_include_directories(crnlib PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/inc
   ${CMAKE_CURRENT_SOURCE_DIR}/crnlib
+)
+
+target_link_libraries(crnlib
+  ${CMAKE_THREAD_LIBS_INIT}
 )
 
 set(CRUNCH_SOURCE_FILES
@@ -117,12 +126,14 @@ set(CRUNCH_SOURCE_FILES
 )
 
 add_executable(crunch ${CRUNCH_SOURCE_FILES})
+set_target_properties(crunch PROPERTIES
+  OUTPUT_NAME ${CRUNCH_TOOL_NAME}
+)
 target_compile_options(crunch PRIVATE ${CRUNCH_COMPILE_OPTIONS})
 
 target_link_libraries(crunch
-  crnlib
   ${CMAKE_DL_LIBS}
-  ${CMAKE_THREAD_LIBS_INIT}
+  crnlib
 )
 
 target_include_directories(crunch PUBLIC
