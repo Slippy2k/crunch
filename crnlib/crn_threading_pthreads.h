@@ -149,7 +149,7 @@ class task_pool {
   task_pool(uint num_threads);
   ~task_pool();
 
-  enum { cMaxThreads = 16 };
+  enum { cMaxThreads = 64 };
   bool init(uint num_threads);
   void deinit();
 

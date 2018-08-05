@@ -217,7 +217,8 @@ class task_pool {
   task_pool(uint num_threads);
   ~task_pool();
 
-  enum { cMaxThreads = 16 };
+  // TODO: only tested in crn_threading_pthreads.h; make sure this works too
+  enum { cMaxThreads = 64 };
   bool init(uint num_threads);
   void deinit();
 
