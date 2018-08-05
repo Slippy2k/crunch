@@ -12,9 +12,7 @@ set(CMAKE_CXX_STANDARD 11)
 find_package(Threads REQUIRED)
 
 set(CRUNCH_COMPILE_OPTIONS
-  "-fomit-frame-pointer"
   "-ffast-math"
-  "-fno-math-errno"
   "-fno-strict-aliasing"
   "-Wno-attributes"
   "-Wno-unused"
